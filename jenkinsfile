@@ -6,9 +6,40 @@ pipeline {
     stages {
         stage('Build with Maven') {
             steps {
+                echo "🛠️ Building using Shared Library"
                 // Use the shared library function
                 mavenBuild()
             }
+        }
+
+        stage('Unit Test') {
+            steps {
+                echo "🧪 Running Unit Tests..."
+                sh 'mvn test'
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo "📦 Packaging Application..."
+                sh 'mvn package'
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                echo "📁 Archiving JAR/WAR files..."
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Pipeline completed successfully!"
+        }
+        failure {
+            echo "❌ Pipeline failed. Check logs."
         }
     }
 }
