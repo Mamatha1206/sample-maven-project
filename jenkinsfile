@@ -1,0 +1,14 @@
+@Library('maven-shared-lib') _
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Build with Maven') {
+            steps {
+                // Use the shared library function
+                mavenBuild()
+            }
+        }
+    }
+}
